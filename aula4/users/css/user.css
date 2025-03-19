@@ -1,0 +1,5 @@
+.modal{
+    background-color: rgba(6, 5, 5, 0.029);
+    display: flex;
+    position: relative;
+}

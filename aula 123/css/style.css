@@ -1,0 +1,50 @@
+div {
+
+}
+
+.beleza {
+    background-color: red;
+}
+
+.formItem {
+    border-radius: 8px;
+    margin: 8px;
+    display: grid;
+    padding: 8px;
+    border: 1px solid #34495e;
+}
+.formItem > input {
+    border: none;
+}
+
+.formItem:hover{
+    border: 2px solid #3498db;
+}
+
+.formItem > .warn {
+    color: red;
+    display: none;
+}
+
+.formRow {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .btn {
+    color: #ecf0f1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+  }
+  .bntSave{
+    background-color: #2980b9;
+  }
+
+  .bntCancel{
+    background-color: #c0392b;
+  }
+
+  .btn:hover{
+    border: 3px solid #d35400 ;
+  }
