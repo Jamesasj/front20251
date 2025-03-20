@@ -1,7 +1,6 @@
 const btnCreate = document.getElementById("createUser");
-
-const lusers = [];
-
+localStorage.getItem('lusers')
+const lusers = JSON.parse(localStorage.getItem('lusers') || "[]") ;
 
 function updateTabela(){
     const etbody = document.querySelector('tbody');
@@ -15,25 +14,38 @@ function updateTabela(){
         <td> <td>
         <td> <td>
         <td>
-            <button>editar</button>
-            <button>remover</button>
+            <button class="edit" data="${user.id}">editar</button>
+            <button class="delete" data="${user.id}">remover</button>
         </td>
         ` ;
         etbody.appendChild(elinha)
+        const btn = elinha.querySelector('.edit');
+
+        btn.onclick = ({target}) => {
+            const index = target.getAttribute('data');
+            const u = lusers[index];
+            callModal(u);
+        }
     })
+
 }
 
-const callModal =  () => {
+const callModal =  (user) => {
     const main = document.querySelector('main');
     const emodal = document.createElement('div');
 
     emodal.classList = 'modal';
 
+    const eaux = document.querySelector('main > .modal');
+    eaux?.remove();
+
+
+
     emodal.innerHTML = `
      <div class="formCadastro">
             <div class="formItem" id="nome">
                 <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome">
+                <input type="text" name="nome" id="nome" value="${user?.nome||""}">
             </div>
 
             <div class="formItem" id="sobrenome">
@@ -70,14 +82,14 @@ const callModal =  () => {
     btnSave.onclick=()=>{
         const enome = document.querySelector('#nome > input');
 
-        const user = {nome: enome.value };
+        const user = {id: lusers.length , nome: enome.value };
         lusers.push(user);
 
-        console.log(lusers)
+        localStorage.setItem('lusers', JSON.stringify(lusers))
         updateTabela()
     }
 
 }
 
-callModal()
+updateTabela()
 btnCreate.onclick = callModal;
