@@ -1,6 +1,6 @@
 const btnCreate = document.getElementById("createUser");
 localStorage.getItem('lusers')
-const lusers = JSON.parse(localStorage.getItem('lusers') || "[]") ;
+let lusers = JSON.parse(localStorage.getItem('lusers') || "[]") ;
 
 function updateTabela(){
     const etbody = document.querySelector('tbody');
@@ -19,12 +19,25 @@ function updateTabela(){
         </td>
         ` ;
         etbody.appendChild(elinha)
-        const btn = elinha.querySelector('.edit');
+        const btnEdit = elinha.querySelector('.edit');
 
-        btn.onclick = ({target}) => {
+        const btnDelete = elinha.querySelector('.delete');
+
+        btnEdit.onclick = ({target}) => {
             const index = target.getAttribute('data');
             const u = lusers[index];
             callModal(u);
+        }
+
+        btnDelete.onclick = ({target}) => {
+            const index = target.getAttribute('data');
+
+            console.log(lusers.length);
+        
+            lusers = lusers.slice(index);
+
+            localStorage.setItem('lusers', JSON.stringify(lusers))
+            updateTabela()
         }
     })
 
@@ -39,10 +52,9 @@ const callModal =  (user) => {
     const eaux = document.querySelector('main > .modal');
     eaux?.remove();
 
-
-
     emodal.innerHTML = `
      <div class="formCadastro">
+     <input type="hidden" id="index" value="${user?.id||""}">
             <div class="formItem" id="nome">
                 <label for="nome">Nome</label>
                 <input type="text" name="nome" id="nome" value="${user?.nome||""}">
@@ -80,13 +92,23 @@ const callModal =  (user) => {
     const btnSave = document.getElementById('btnSave');
 
     btnSave.onclick=()=>{
+        const eindex = document.querySelector('input#index');
+
         const enome = document.querySelector('#nome > input');
 
-        const user = {id: lusers.length , nome: enome.value };
-        lusers.push(user);
+        if(eindex.value != ""){
+            const user = lusers[eindex.value];
+            user.nome = enome.value;
+            localStorage.setItem('lusers', JSON.stringify(lusers))
+            updateTabela()
 
-        localStorage.setItem('lusers', JSON.stringify(lusers))
-        updateTabela()
+        } else {
+            const user = {id: lusers.length , nome: enome.value };
+            lusers.push(user);
+    
+            localStorage.setItem('lusers', JSON.stringify(lusers))
+            updateTabela()
+        }
     }
 
 }
